@@ -1,5 +1,5 @@
 //[[[[[[[[[[[[[[[[[[[[[[[MODEL]]]]]]]]]]]]]]]]]]]]]]]/////////////////
-var models= {};
+/*var models= {};
 //add usgsRequest object that is an instance of model that writes and sends request to USGS
 models.usgsRequest = function(){
     this.request={
@@ -155,3 +155,4 @@ $(document).ready(function(){
     var view = new views.graph();
     var controller = new controllers(model, view);
 });
+*/
