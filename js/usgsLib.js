@@ -1,6 +1,6 @@
 //create object
-var usgs = function(){
-    this.request={
+var usgs = {
+    request:{
       format: "json",
       bBox: "",
       period: "P5D",
@@ -10,6 +10,16 @@ var usgs = function(){
       csurl: 'http://waterservices.usgs.gov/nwis/iv/'
     }
 };
+
+  //writeRequest turns the getCurrentPosition object into a string in the request
+usgs.prototype.writeRequest=function(position){
+    var long=position.coords.longitude.toString().slice(0,11);
+    var lat=position.coords.latitude.toString().slice(0,9);
+    var longExt=(position.coords.longitude+1).toString().slice(0,11);
+    var latExt=(position.coords.latitude+1).toString().slice(0,9);  
+    usgs.request.bBox = long+","+lat+","+longExt+","+latExt;
+};
+
 //getLocation method will need to be called from controller
 usgs.prototype.getLocation=function(){
     if (navigator.geolocation) {
@@ -22,14 +32,6 @@ usgs.prototype.getLocation=function(){
     else {
       x.innerHTML = "Geolocation is not supported by this browser.";
     }
-};
-  //writeRequest turns the getCurrentPosition object into a string in the request
-usgs.prototype.writeRequest=function(position){
-    var long=position.coords.longitude.toString().slice(0,11);
-    var lat=position.coords.latitude.toString().slice(0,9);
-    var longExt=(position.coords.longitude+1).toString().slice(0,11);
-    var latExt=(position.coords.latitude+1).toString().slice(0,9);  
-    this.request.bBox = long+","+lat+","+longExt+","+latExt;
 };
   //sendRequest sends the request written by writeRequest
   //will need to be called from controller
