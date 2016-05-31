@@ -1,10 +1,10 @@
 var controllers = function(model, view){
     // 1.getLocation
     //Q: why do I have to write .prototype?
-    usgs.prototype.getLocation();
+    usgs.getLocation();
     
     // 2.sendRequest
-    var usgsResults = usgs.prototype.sendRequest(usgs.request);
+    var usgsResults = usgs.sendRequest(usgs.request);
     
     // 3.populateSeries with library's results as input
     model.populateSeries(usgsResults);
