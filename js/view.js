@@ -1,38 +1,29 @@
 
-var views = function(){
-  //this.hydrograph = document.getElementById('graph').getContext('2d');
-  //declare flowSeries property
-  this.flowSeries = {};
-};
-
-//create a flowSeries from the model data
-views.prototype.makeFlowSeries=function(xData, gageName, yData){
-   this.flowSeries = {
-     labels: xData,
-      datasets:[{
-        label: gageName,
-        pointStrokeColor: "#fff",
-        strokeColor: "rgba(220,220,220,1)",
-        data: yData,
-        borderColor: '#0F5498',
-        pointRadius: 0,
-        fill: false
-      }]
-    }
- };
- 
- 
-//create the drawGraph method that shows the number of sites and graphs the data
-views.prototype.drawGraph=function(models){
-    $(".graph h5").text(usgs.results.numberOfSites+" gages near you");
+app.views = function(){
+  this.drawGraph = function(models){
+    $(".graph h5").text(models.numberOfSites+" gages near you");
     //create hydrograph and data variables to be used in myChart
     var hydrograph = document.getElementById('graph').getContext('2d');
+    //check that data exist
+    console.log(models.sites);
+    var siteData = models.sites[0];
     var myChart = new Chart(hydrograph,{
       type: "line",
       //siteData refers to the site taken from the sitesArray in line 30
-      data: models.sites[0],
+      data: {
+        labels: models.sites[0].xData,
+        datasets: [{
+          label: models.sites[0].gageName,
+          pointStrokeColor: "#fff",
+          strokeColor: "rgba(220,220,220,1)",
+          data: models.sites[0].yData,
+          borderColor: '#0F5498',
+          pointRadius: 0,
+          fill: false
+        }]
+      },
       options: {
-        //scaleShowLabels: true,
+        scaleShowLabels: true,
         responsive: true,
         maintainAspectRatio: true,
         scales:{
@@ -62,7 +53,6 @@ views.prototype.drawGraph=function(models){
          }//close scales
        }//close options
     });//close myChart
-};//close drawGraph
-
-
-
+  }
+};
+ 
