@@ -33,7 +33,8 @@ app.usgs.prototype.sendRequest=function(){
       type: "GET"
     })
     .done(function(results){
-      this.populateSeries(results);
+      app.models.populateSeries(results);
+      //why is this not a function??
     }) 
     .fail(function(jqXHR, error){
       console.log("error sending request");

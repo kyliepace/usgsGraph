@@ -12,27 +12,21 @@ app.models=function(){
 };
 
 //the populateSeries method pushes the usgsData into yData and xData arrays
-app.models.prototype.populateSeries = function(){
-  console.log(usgs);
-  var that = this;
-  usgs.sendRequest().bind(usgs)
-      .done(function(results){
-          that.numberOfSites=results.value.timeSeries.length;
-          //show the name of the result
-          that.results.gageName=results.value.timeSeries[0].sourceInfo.siteName;
-          //go through each x,y pair in that timeseries's results. 
-          $.each(results.value.timeSeries[0].values[0].value, function(i, value){
-          //use moment library to format iso timestamp, then push into xData array
-            var timestamp = moment(value.dateTime).format("MM/DD HH:mm");
-            that.results.xData.push(timestamp);
-            that.yData.push(parseInt(value.value));
-          });
-  });
+app.models.prototype.populateSeries = function(results){
+
   console.log(results);
-  //results work
-  //the results appear to be not json again
-    
+  this.numberOfSites=results.value.timeSeries.length;
+  //show the name of the result
+  this.results.gageName=results.value.timeSeries[0].sourceInfo.siteName;
+  //go through each x,y pair in that timeseries's results. 
+  $.each(results.value.timeSeries[0].values[0].value, function(i, value){
+        //use moment library to format iso timestamp, then push into xData array
+    var timestamp = moment(value.dateTime).format("MM/DD HH:mm");
+    this.results.xData.push(timestamp);
+    this.yData.push(parseInt(value.value));
+  });
 };
+  
 
 //give sites object an addFlowSeries method that adds each flowSeries to the sites array
 app.models.prototype.addFlowSeries = function(){
