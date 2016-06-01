@@ -23,17 +23,16 @@ views.prototype.makeFlowSeries=function(xData, gageName, yData){
  
  
 //create the drawGraph method that shows the number of sites and graphs the data
-views.prototype.drawGraph=function(numSites, sitesArray){
-    $(".graph h5").html(numSites+" gages near you");
+views.prototype.drawGraph=function(models){
+    $(".graph h5").text(usgs.results.numberOfSites+" gages near you");
     //create hydrograph and data variables to be used in myChart
     var hydrograph = document.getElementById('graph').getContext('2d');
-    var siteData = sitesArray[0]
     var myChart = new Chart(hydrograph,{
       type: "line",
       //siteData refers to the site taken from the sitesArray in line 30
-      data: siteData,
+      data: models.sites[0],
       options: {
-        scaleShowLabels: true,
+        //scaleShowLabels: true,
         responsive: true,
         maintainAspectRatio: true,
         scales:{
@@ -46,7 +45,7 @@ views.prototype.drawGraph=function(numSites, sitesArray){
               time:{
                 parser: true,
                 unit: "day",
-                unitStepSize: 0.7,
+                unitStepSize: 1,
                 displayFormats: {
                   'hour': 'HH:mm', // 13:00
                   'day': 'DD MMM HH:mm', // 04 June 13:00
