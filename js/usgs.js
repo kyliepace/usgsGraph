@@ -2,7 +2,7 @@
 app.usgs = function(){
     this.request={
       format: "json",
-      bBox: "-121.455557,38.561903,-120.455557,39.561903",
+      bBox: "",
       period: "P5D",
       parameterCD: "00060",
       siteType:"ST",
@@ -18,7 +18,7 @@ app.usgs.prototype.writeRequest=function(position){
     var lat=position.coords.latitude.toString().slice(0,9);
     var longExt=(position.coords.longitude+1).toString().slice(0,11);
     var latExt=(position.coords.latitude+1).toString().slice(0,9);  
-    usgs.request.bBox = long+","+lat+","+longExt+","+latExt;
+    this.request.bBox = long+","+lat+","+longExt+","+latExt;
 };
 
 
@@ -32,8 +32,9 @@ app.usgs.prototype.sendRequest=function(){
       data: this.request,
       type: "GET"
     })
-    //populateSeries if complete. 
-    .done(app.models.populateSeries)
+    .done(function(results){
+      this.populateSeries(results);
+    }) 
     .fail(function(jqXHR, error){
       console.log("error sending request");
     })  
