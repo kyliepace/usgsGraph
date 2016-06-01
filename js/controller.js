@@ -5,17 +5,19 @@ var controllers = function(modelObject, viewObject){
     //getLocation calls writeRequest and updates usgs.request
     
     // 2.sendRequest
-    //is usgs.request being sent before the getLocation is complete?
+    //is usgs.request being sent before the getLocation is complete? error message says that coordinate string length is zero
+    usgs.sendRequest(usgs.request);
+
+    //the if statement doesn't run sendRequest
     if (usgs.request.bBox!== ""){
         usgs.sendRequest(usgs.request);
     }
     
     // 3.populateSeries with library's results as input
-    //this should be in sendRequest .done but I don't think it's working
-    usgs.populateSeries();
+    //usgs.populateSeries();
     
     // 4.make flowSeries from populated array
-    var newFlow = viewObject.makeFlowSeries(usgs.xData, usgs.gageName, usgs.yData);
+    var newFlow = viewObject.makeFlowSeries(usgs.results.xData, usgs.results.gageName, usgs.results.yData);
     
     // 5.add the new flowSeries to the sites array
     modelObject.addFlowSeries(newFlow);

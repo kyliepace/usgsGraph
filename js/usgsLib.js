@@ -2,7 +2,7 @@
 var usgs = {
     request:{
       format: "json",
-      bBox: "",
+      bBox: "-121.455557,38.561903,-120.455557,39.561903",
       period: "P5D",
       parameterCD: "00060",
       siteType:"ST",
@@ -20,10 +20,7 @@ var usgs = {
 usgs.getLocation=function(){
     if (navigator.geolocation) {
       //return the geolocation object with writeRequest as a callback
-      navigator.geolocation.getCurrentPosition(function(position){
-          //callback writeRequest method
-          usgs.writeRequest(position);
-      });
+      navigator.geolocation.getCurrentPosition(usgs.writeRequest);
     }
     else {
       x.innerHTML = "Geolocation is not supported by this browser.";
