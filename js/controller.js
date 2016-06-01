@@ -5,10 +5,6 @@ var controllers = function(modelObject, viewObject){
     //getLocation calls writeRequest and updates usgs.request
     
     // 2.sendRequest
-    //is usgs.request being sent before the getLocation is complete? error message says that coordinate string length is zero
-    usgs.sendRequest(usgs.request);
-
-    //the if statement doesn't run sendRequest
     if (usgs.request.bBox!== ""){
         usgs.sendRequest(usgs.request);
     }
