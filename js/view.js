@@ -1,9 +1,9 @@
 
 app.views = function(){
   this.model;
-}
+};
 
-app.views.prototype.drawGraph = function(){
+app.views.prototype.drawGraph  = function(){
     $(".graph h5").text(this.model.numberOfSites+" gages near you");
     //create hydrograph and data variables to be used in myChart
     var hydrograph = document.getElementById('graph').getContext('2d');
@@ -55,5 +55,5 @@ app.views.prototype.drawGraph = function(){
          }//close scales
        }//close options
     });//close myChart
-  };
+};
  

@@ -4,7 +4,7 @@ app.controller = function(model, view){
     this.model = model;
     this.view = view;
     this.view.model = this.model;
-    this.model.callback = this.view.drawGraph.bind(this.view);
+    //this.model.callback = this.view.drawGraph.bind(this.view);
 };
 
 app.controller.prototype.run = function(){ 

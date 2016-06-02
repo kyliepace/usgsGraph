@@ -1,33 +1,33 @@
 
 
 app.model=function(){
-  this.numberOfSites = "",
+  this.numberOfSites = 0;
   this.results={
       gageName: "",
       xData: [],
       yData: []
     };
   this.sites=[];
-  this.callback;
+  //this.callback;
 };
 
 //the populateSeries method pushes the usgsData into yData and xData arrays
-app.model.prototype.populateSeries = function(results){
-  console.log(results);
-  this.numberOfSites=results.value.timeSeries.length;
-  for (i=0; i<this.numberOfSites; i++){
-    this.results.gageName=results.value.timeSeries[0].sourceInfo.siteName;
+app.model.prototype.populateSeries = function(data){
+  console.log(data);
+  this.numberOfSites=data.value.timeSeries.length;
+  var that = this;
+  for (var n=0; n<that.numberOfSites; n++){
+    that.results.gageName=data.value.timeSeries[n].sourceInfo.siteName;
     //go through each x,y pair in that timeseries's results. 
-    $.each(results.value.timeSeries[0].values[0].value, function(i, value){
+    $.each(data.value.timeSeries[n].values[n].value, function(i, value){
         //use moment library to format iso timestamp, then push into xData array
         var timestamp = moment(value.dateTime).format("MM/DD HH:mm");
-        this.results.xData.push(timestamp);
-        this.yData.push(parseInt(value.value));
-    });
-    this.sites.push(this.results);
+        that.results.xData.push(timestamp);
+        that.results.yData.push(parseInt(value.value));
+    })
+    that.sites.push(that.results);
   }
-  console.log(this.sites); 
-  this.callback();
+  //that.callback();
 };
   
 app.model.prototype.getData = function(position){
@@ -35,8 +35,8 @@ app.model.prototype.getData = function(position){
   var that = this;
   usgs.goTalk(position)
       //when results are back, populateSeries
-      .done(function(results){
-          that.populateSeries(results);
+      .done(function(data){
+          that.populateSeries(data);
       }) 
       .fail(function(jqXHR, error){
           console.log("error sending request");
