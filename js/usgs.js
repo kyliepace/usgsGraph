@@ -30,7 +30,7 @@ app.usgs.prototype.goTalk=function(position){
       url: 'https://www.gmtatennis.org/kp/proxy.php',
       format: "json",
       data: this.writeRequest(position), //don't send any params to usgs until writeRequest has formatted us some coords
-      type: "GET",
+      type: "GET"
     });
      
 };

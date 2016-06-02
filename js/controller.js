@@ -13,7 +13,8 @@ var that = this;
     if (navigator.geolocation) {
         //return the geolocation object with writeRequest as a callback
         navigator.geolocation.getCurrentPosition(function(position){
-            that.model.getData(position);  //need a callback
+            that.model.getData(position);
+            console.log(that.model);  //need a callback
         });
     }
     else {
@@ -25,7 +26,7 @@ var that = this;
 
 $(document).ready(function(){
     var model = new app.model();
-
+    //why does it say this is not a constructor??
     var view = new app.views();
     
     var controller = new app.controller(model, view); 
