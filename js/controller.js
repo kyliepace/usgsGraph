@@ -1,42 +1,33 @@
-app.controllers = function(usgs, model, view){
-    // 2.populateSeries with library's results as input when sendRequest is complete
-    usgs.sendRequest();
-   
-   //i need to call model.populateSeries from sendRequest once done, but I can't get it to work
+var app = {};
 
-
-    // 3.push populateSeries arrays to model.sites array
-    model.addFlowSeries();
-    
-    //4.draw the graph with data from the model
-    view.drawGraph(model);
+app.controller = function(model, view){
+    this.model = model;
+    this.view = view;
+    this.view.model = this.model;
+    this.model.callback = this.view.drawGraph.bind(this.view);
 };
 
-/////[[[[[[[[[[   ON LOAD    ]]]]]]]]]]]]]]////////////////
-
-$(document).ready(function(){
-    var model = new app.models();
-    console.log(model);
-    var view = new app.views();
-     console.log(view);
-    var usgs = new app.usgs();
-    console.log(usgs);
-
-
-    //getLocation method will need to be called from controller
-    //1. getLocation calls writeRequest and updates usgs.request
+app.controller.prototype.run = function(){ 
+    //get the coordinates, sends the request, gets data, and populates the series array
+var that = this;
     if (navigator.geolocation) {
         //return the geolocation object with writeRequest as a callback
         navigator.geolocation.getCurrentPosition(function(position){
-            usgs.writeRequest(position).bind(usgs);
+            that.model.getData(position);  //need a callback
         });
     }
     else {
       x.innerHTML = "Geolocation is not supported by this browser.";
     }
+};
 
+/////[[[[[[[[[[   ON LOAD    ]]]]]]]]]]]]]]////////////////
 
-    var controller = new app.controllers(usgs, model, view); 
-    //does creating the instance of the controller call the functions invoked in that object type?
+$(document).ready(function(){
+    var model = new app.model();
 
+    var view = new app.views();
+    
+    var controller = new app.controller(model, view); 
+    controller.run();
 });
