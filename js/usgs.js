@@ -1,3 +1,4 @@
+//var $ = require("jquery");
 //create object
 app.usgs = function(){
     //do I have to have something in here?
@@ -34,4 +35,6 @@ app.usgs.prototype.goTalk=function(position){
     });
      
 };
+
+//module.exports = app.usgs;
 

@@ -1,9 +1,15 @@
-var app = {};
+/*
+app.model() = require("./model");
+app.views() = require("./view");
+app.usgs() = require("./usgs");*/
 
+
+var app = {};
 app.controller = function(model, view){
     this.model = model;
     this.view = view;
-    this.view.model = this.model;
+    this.view.model = model;
+    this.model.callback = view.drawGraph.bind(this.view);
     //this.model.callback = this.view.drawGraph.bind(this.view);
 };
 
@@ -14,7 +20,6 @@ var that = this;
         //return the geolocation object with writeRequest as a callback
         navigator.geolocation.getCurrentPosition(function(position){
             that.model.getData(position);
-            console.log(that.model);  //need a callback
         });
     }
     else {
