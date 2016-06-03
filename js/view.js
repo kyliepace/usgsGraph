@@ -2,26 +2,48 @@
 //var Chart = require("chart.js");
 app.views = function(){
   this.model;
+  this.currentSite=0;
+  this.hydrograph;
+  this.xData=[];
+  this.yData=[];
+  this.siteName;
 };
-
+app.views.prototype.arrangeSiteData = function(){
+  var that = this;
+    this.model.sites[this.currentSite].values[0].value.forEach(function(val, i) {
+        that.xData.push(val.dateTime.slice(5,10));
+        that.yData.push(parseInt(val.value));
+    }, this);
+    for (i=0; i<that.xData.length; i++){
+      if (i%50 == 0){
+        that.xData[i] = that.xData[i]
+      }
+      else{
+        that.xData[i]="";
+      }
+      
+    }
+    this.drawGraph();
+};
 app.views.prototype.drawGraph  = function(){
   console.log(this.model);
-  var that = this;
-    $(".graph h5").text(that.model.numberOfSites+" gages near you");
+  
+    $(".graph h5").text(this.model.numberOfSites+" gages near you");
     //create hydrograph and data variables to be used in myChart
-    var hydrograph = document.getElementById('graph').getContext('2d');
+    this.hydrograph = document.getElementById('graph').getContext('2d');
     //check that data exist
-    console.log(that.model.sites);
-    var myChart = new Chart(hydrograph,{
+    console.log(this.model.sites);
+    var that = this;
+    var myChart = new Chart(that.hydrograph,{
       type: "line",
       //siteData refers to the site taken from the sitesArray in line 30
       data: {
-        labels: that.model.sites[0].xData,
+        labels: that.xData,
         datasets: [{
-          label: that.model.sites[0].gageName,
+          label: that.model.sites[that.currentSite].sourceInfo.siteName,
           pointStrokeColor: "#fff",
           strokeColor: "rgba(220,220,220,1)",
-          data: that.model.sites[0].yData,
+          data: that.yData,
           borderColor: '#0F5498',
           pointRadius: 0,
           fill: false
@@ -31,22 +53,23 @@ app.views.prototype.drawGraph  = function(){
         scaleShowLabels: true,
         responsive: true,
         maintainAspectRatio: true,
+
         scales:{
             xAxes: [{
-              type: "time",
+              type: "category",
               scaleLabel:{
                 display: true,
-                labelString: "Time (hours)"
+                labelString: "Day (mm-dd)",
               },
-              time:{
+              /*time:{
                 parser: true,
                 unit: "day",
                 unitStepSize: 1,
                 displayFormats: {
                   'hour': 'HH:mm', // 13:00
-                  'day': 'DD MMM HH:mm', // 04 June 13:00
+                  'day': 'DD MMM', // 04 June 13:00
                 }
-              }
+              }*/
             }],
             yAxes:[{
               type: "linear",
@@ -59,6 +82,24 @@ app.views.prototype.drawGraph  = function(){
        }//close options
     });//close myChart
 };
+
+app.views.prototype.changeSites = function(){
+  $("#rightArrow").on("click",function(){
+    this.next();
+  });
+  $("#leftArrow").on("click",function(){
+    this.previous();
+  })
+}
+
+app.views.prototype.next = function(){
+  this.currentSite ++;
+  this.drawGraph();
+}
+app.views.prototype.previous = function(){
+  this.currentSite --;
+  this.drawGraph();
+}
 
 //module.exports = app.views;
  

@@ -9,8 +9,7 @@ app.controller = function(model, view){
     this.model = model;
     this.view = view;
     this.view.model = model;
-    this.model.callback = view.drawGraph.bind(this.view);
-    //this.model.callback = this.view.drawGraph.bind(this.view);
+    this.model.callback = view.arrangeSiteData.bind(this.view);
 };
 
 app.controller.prototype.run = function(){ 

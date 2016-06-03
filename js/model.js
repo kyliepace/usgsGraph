@@ -8,10 +8,8 @@ app.model=function(){
 
 //the populateSeries method pushes the usgsData into yData and xData arrays
 app.model.prototype.populateSeries = function(numberOfSites, siteArray){
-  console.log("does this work helloo");
   this.numberOfSites=numberOfSites;
-  var that = this;
-  for (n=0; n<this.numberOfSites; n++){
+  /*for (n=0; n<this.numberOfSites; n++){
     var results = {
       gageName: "",
       xData: [],
@@ -19,14 +17,14 @@ app.model.prototype.populateSeries = function(numberOfSites, siteArray){
     };
     results.gageName=siteArray[n].sourceInfo.siteName;
     //go through each x,y pair in that timeseries's results. 
-    $.each(siteArray[n].values[0].value, function(i, value){
+    $.each(siteArray[n].values[0].value, function(n, value){
         //use moment library to format iso timestamp, then push into xData array
-        var timestamp = moment(value.dateTime).format("MM/DD HH:mm");
-        results.xData.push(timestamp);
+        results.xData.push(moment(value.dateTime).format("MM/DD"));
         results.yData.push(parseInt(value.value));
     });
     this.sites.push(results);
-  };
+  };*/
+  this.sites = siteArray;
   console.log(this.sites);
   //call view.drawGraph()
   this.callback();
@@ -43,5 +41,7 @@ app.model.prototype.getData = function(position){
           console.log("error sending request");
       })
 };
+
+
 
 //module.exports = app.model;
