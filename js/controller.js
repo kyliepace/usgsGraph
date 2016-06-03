@@ -24,6 +24,7 @@ var that = this;
     else {
       x.innerHTML = "Geolocation is not supported by this browser.";
     }
+    that.view.changeSites();
 };
 
 /////[[[[[[[[[[   ON LOAD    ]]]]]]]]]]]]]]////////////////

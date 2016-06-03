@@ -84,11 +84,12 @@ app.views.prototype.drawGraph  = function(){
 };
 
 app.views.prototype.changeSites = function(){
+  var that = this;
   $("#rightArrow").on("click",function(){
-    this.next();
+    that.next();
   });
   $("#leftArrow").on("click",function(){
-    this.previous();
+    that.previous();
   })
 }
 
