@@ -9,6 +9,10 @@ app.views = function(){
   this.siteName;
 };
 app.views.prototype.arrangeSiteData = function(){
+  //clear values
+  this.xData=[];
+  this.yData=[];
+  this.siteName="";
   var that = this;
     this.model.sites[this.currentSite].values[0].value.forEach(function(val, i) {
         that.xData.push(val.dateTime.slice(5,10));
@@ -26,13 +30,11 @@ app.views.prototype.arrangeSiteData = function(){
     this.drawGraph();
 };
 app.views.prototype.drawGraph  = function(){
-  console.log(this.model);
   
     $(".graph h5").text(this.model.numberOfSites+" gages near you");
     //create hydrograph and data variables to be used in myChart
     this.hydrograph = document.getElementById('graph').getContext('2d');
-    //check that data exist
-    console.log(this.model.sites);
+
     var that = this;
     var myChart = new Chart(that.hydrograph,{
       type: "line",
@@ -40,7 +42,7 @@ app.views.prototype.drawGraph  = function(){
       data: {
         labels: that.xData,
         datasets: [{
-          label: that.model.sites[that.currentSite].sourceInfo.siteName,
+          label: that.siteName,
           pointStrokeColor: "#fff",
           strokeColor: "rgba(220,220,220,1)",
           data: that.yData,
@@ -108,7 +110,7 @@ app.views.prototype.next = function(){
   else{
     this.currentSite = 0;
   }
-  this.drawGraph();
+  this.arrangeSiteData();
 }
 app.views.prototype.previous = function(){
   if(this.currentSite>0){
@@ -117,7 +119,7 @@ app.views.prototype.previous = function(){
   else{
     this.currentSite=this.model.numberOfSites;
   }
-  this.drawGraph();
+  this.arrangeSiteData();
 }
 
 //module.exports = app.views;
