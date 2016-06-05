@@ -90,15 +90,33 @@ app.views.prototype.changeSites = function(){
   });
   $("#leftArrow").on("click",function(){
     that.previous();
-  })
+  });
+  $("body").keydown(function(e){
+    if (e.which === 37){
+      that.next();
+    }
+    else if (e.which === 39){
+      that.previous();
+    }
+  });
 }
 
 app.views.prototype.next = function(){
-  this.currentSite ++;
+  if(this.currentSite<this.model.numberOfSites){
+    this.currentSite ++;
+  }
+  else{
+    this.currentSite = 0;
+  }
   this.drawGraph();
 }
 app.views.prototype.previous = function(){
-  this.currentSite --;
+  if(this.currentSite>0){
+    this.currentSite --;
+  }
+  else{
+    this.currentSite=this.model.numberOfSites;
+  }
   this.drawGraph();
 }
 
