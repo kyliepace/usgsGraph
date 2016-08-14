@@ -1,21 +1,17 @@
 {
   "name": "usgsgraph",
   "version": "1.0.0",
-  "description": "",
-  "main": "js/controller.js",
+  "description": "Thinkful project that sends user location to USGS API, graphs nearby stream flow",
+  "main": "./public/bundle.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-     "build:js": "npm run clean:js && webpack",
-    "watch:js": "npm run build:js && webpack --watch",
-    "clean:js": "rm -f build/$npm_package_name.$npm_package_version.js build/$npm_package_name.$npm_package_version.js.map",
-     "build": "npm run clean && npm run mkdir && npm run build:html && npm run build:css && npm run build:js",
-    "watch": "npm run watch:html & npm run watch:css & npm run watch:js"
+    "dev": "webpack"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kyliepace/usgsGraph.git"
   },
-  "author": "",
+  "author": "Kylie Pace",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/kyliepace/usgsGraph/issues"
@@ -27,6 +23,7 @@
     "momentjs": "^1.1.7"
   },
   "devDependencies": {
+    "html-webpack-plugin": "^2.22.0",
     "webpack": "^1.13.1"
   }
 }

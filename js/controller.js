@@ -1,18 +1,16 @@
-/*
-app.model() = require("./model");
-app.views() = require("./view");
-app.usgs() = require("./usgs");*/
+var Model = require('./model.js');
+var Views = require("./view.js");
 
+var $ = require("jquery");
 
-var app = {};
-app.controller = function(model, view){
+Controller = function(model, view){
     this.model = model;
     this.view = view;
     this.view.model = model;
-    this.model.callback = view.arrangeSiteData.bind(this.view);
+    this.model.callback = view.drawGraph.bind(this.view);
 };
 
-app.controller.prototype.run = function(){ 
+Controller.prototype.run = function(){ 
     //get the coordinates, sends the request, gets data, and populates the series array
 var that = this;
     if (navigator.geolocation) {
@@ -30,10 +28,10 @@ var that = this;
 /////[[[[[[[[[[   ON LOAD    ]]]]]]]]]]]]]]////////////////
 
 $(document).ready(function(){
-    var model = new app.model();
-    //why does it say this is not a constructor??
-    var view = new app.views();
+    var model = new Model();
     
-    var controller = new app.controller(model, view); 
+    var view = new Views();
+    
+    var controller = new Controller(model, view); 
     controller.run();
 });

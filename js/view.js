@@ -1,37 +1,14 @@
-//var $ = require("jquery");
-//var Chart = require("chart.js");
-app.views = function(){
+var $ = require("jquery");
+var Chart = require("chart.js");
+Views = function(){
   this.model;
   this.currentSite=0;
   this.hydrograph;
-  this.xData=[];
-  this.yData=[];
-  this.siteName;
 };
-app.views.prototype.arrangeSiteData = function(){
-  //clear values
-  this.xData=[];
-  this.yData=[];
-  this.siteName="";
+Views.prototype.drawGraph  = function(){
   var that = this;
-    this.model.sites[this.currentSite].values[0].value.forEach(function(val, i) {
-        that.xData.push(val.dateTime.slice(5,10));
-        that.yData.push(parseInt(val.value));
-    }, this);
-    for (i=0; i<that.xData.length; i++){
-      if (i%50 == 0){
-        that.xData[i] = that.xData[i]
-      }
-      else{
-        that.xData[i]="";
-      }
-      
-    }
-    this.drawGraph();
-};
-app.views.prototype.drawGraph  = function(){
-  
-    $(".graph h5").text(this.model.numberOfSites+" gages near you");
+    //update graph caption
+    $(".graph h5").text(that.currentSite +1 +" of "+ that.model.numberOfSites+" gages near you");
     //create hydrograph and data variables to be used in myChart
     this.hydrograph = document.getElementById('graph').getContext('2d');
 
@@ -40,12 +17,12 @@ app.views.prototype.drawGraph  = function(){
       type: "line",
       //siteData refers to the site taken from the sitesArray in line 30
       data: {
-        labels: that.xData,
+        labels: that.model.sites[that.currentSite].xData,
         datasets: [{
-          label: that.siteName,
+          label: that.model.sites[that.currentSite].siteName,
           pointStrokeColor: "#fff",
           strokeColor: "rgba(220,220,220,1)",
-          data: that.yData,
+          data: that.model.sites[that.currentSite].yData,
           borderColor: '#0F5498',
           pointRadius: 0,
           fill: false
@@ -63,15 +40,15 @@ app.views.prototype.drawGraph  = function(){
                 display: true,
                 labelString: "Day (mm-dd)",
               },
-              /*time:{
+              time:{
                 parser: true,
                 unit: "day",
-                unitStepSize: 1,
+                unitStepSize: 10,
                 displayFormats: {
                   'hour': 'HH:mm', // 13:00
                   'day': 'DD MMM', // 04 June 13:00
                 }
-              }*/
+              }
             }],
             yAxes:[{
               type: "linear",
@@ -85,7 +62,7 @@ app.views.prototype.drawGraph  = function(){
     });//close myChart
 };
 
-app.views.prototype.changeSites = function(){
+Views.prototype.changeSites = function(){
   var that = this;
   $("#rightArrow").on("click",function(){
     that.next();
@@ -103,24 +80,24 @@ app.views.prototype.changeSites = function(){
   });
 }
 
-app.views.prototype.next = function(){
+Views.prototype.next = function(){
   if(this.currentSite<this.model.numberOfSites){
     this.currentSite ++;
   }
   else{
     this.currentSite = 0;
   }
-  this.arrangeSiteData();
+  this.drawGraph();
 }
-app.views.prototype.previous = function(){
+Views.prototype.previous = function(){
   if(this.currentSite>0){
     this.currentSite --;
   }
   else{
     this.currentSite=this.model.numberOfSites;
   }
-  this.arrangeSiteData();
+  this.drawGraph();
 }
 
-//module.exports = app.views;
+module.exports = Views;
  

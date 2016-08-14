@@ -1,40 +1,42 @@
-//var moment = require("momentjs");
-//var $ = require("jquery");
-app.model=function(){
+var moment = require("momentjs");
+var $ = require("jquery");
+var Usgs = require('./usgs.js');
+
+Model=function(){ //constructor function
   this.numberOfSites;
   this.sites=[];
   this.callback;
 };
 
 //the populateSeries method pushes the usgsData into yData and xData arrays
-app.model.prototype.populateSeries = function(numberOfSites, siteArray){
-  this.numberOfSites=numberOfSites;
-  /*for (n=0; n<this.numberOfSites; n++){
-    var results = {
-      gageName: "",
+Model.prototype.populateSeries = function(siteArray){
+  this.numberOfSites=siteArray.length;
+  for (n=0; n<this.numberOfSites; n++){
+    var results = { //clear results object
+      siteName: "",
       xData: [],
       yData: []
     };
-    results.gageName=siteArray[n].sourceInfo.siteName;
+    results.siteName=siteArray[n].sourceInfo.siteName; //populate siteName
     //go through each x,y pair in that timeseries's results. 
     $.each(siteArray[n].values[0].value, function(n, value){
         //use moment library to format iso timestamp, then push into xData array
         results.xData.push(moment(value.dateTime).format("MM/DD"));
         results.yData.push(parseInt(value.value));
     });
-    this.sites.push(results);
-  };*/
-  this.sites = siteArray;
+    this.sites.push(results); //push a results object into the model's array of sites
+  };
+  //this.sites = siteArray;
   console.log(this.sites);
   //call view.drawGraph()
   this.callback();
 };
-app.model.prototype.getData = function(position){
-  var usgs = new app.usgs();
+Model.prototype.getData = function(position){
+  var usgs = new Usgs();
   var that = this;
   usgs.goTalk(position)
       .done(function(result){
-          that.populateSeries(result.value.timeSeries.length, result.value.timeSeries);
+          that.populateSeries(result.value.timeSeries);
           console.log(result);
       }) 
       .fail(function(jqXHR, error){
@@ -44,4 +46,4 @@ app.model.prototype.getData = function(position){
 
 
 
-//module.exports = app.model;
+module.exports = Model;

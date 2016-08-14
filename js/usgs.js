@@ -1,12 +1,12 @@
-//var $ = require("jquery");
+var $ = require("jquery");
 //create object
-app.usgs = function(){
-    //do I have to have something in here?
+Usgs = function(){
+    
 };
 
 
   //writeRequest turns the getCurrentPosition object into a string in the request
-app.usgs.prototype.writeRequest=function(position){
+Usgs.prototype.writeRequest=function(position){
     var long=position.coords.longitude.toString().slice(0,11);
     var lat=position.coords.latitude.toString().slice(0,9);
     var longExt=(position.coords.longitude+1).toString().slice(0,11);
@@ -26,7 +26,7 @@ app.usgs.prototype.writeRequest=function(position){
 
   //sendRequest sends the request written by writeRequest
   //will need to be called from controller
-app.usgs.prototype.goTalk=function(position){
+Usgs.prototype.goTalk=function(position){
     return $.ajax({
       url: 'https://www.gmtatennis.org/kp/proxy.php',
       format: "json",
@@ -36,5 +36,5 @@ app.usgs.prototype.goTalk=function(position){
      
 };
 
-//module.exports = app.usgs;
+module.exports = Usgs;
 
