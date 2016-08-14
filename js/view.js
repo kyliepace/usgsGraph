@@ -36,6 +36,7 @@ Views.prototype.drawGraph  = function(){
         scales:{
             xAxes: [{
               type: "category",
+              showXLabels: 10,
               scaleLabel:{
                 display: true,
                 labelString: "Day (mm-dd)",
@@ -81,13 +82,14 @@ Views.prototype.changeSites = function(){
 }
 
 Views.prototype.next = function(){
-  if(this.currentSite<this.model.numberOfSites){
-    this.currentSite ++;
+  var that = this;
+  if(that.currentSite<that.model.numberOfSites-1){
+    that.currentSite ++;
   }
   else{
-    this.currentSite = 0;
+    that.currentSite = 0;
   }
-  this.drawGraph();
+  that.drawGraph();
 }
 Views.prototype.previous = function(){
   if(this.currentSite>0){
