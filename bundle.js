@@ -65,18 +65,9 @@
 	};
 
 	Controller.prototype.run = function(){ 
-	    //get the coordinates, sends the request, gets data, and populates the series array
-	var that = this;
-	    if (navigator.geolocation) {
-	        that.view.showLoading();
-	        //return the geolocation object with writeRequest as a callback
-	        navigator.geolocation.getCurrentPosition(function(position){
-	            that.model.getData(position);
-	        });
-	    }
-	    else {
-	      x.innerHTML = "Geolocation is not supported by this browser.";
-	    }
+	    var that = this;
+	    that.view.watchForm();
+	    
 	    that.view.changeSites();
 	};
 
@@ -109,31 +100,35 @@
 
 	//the populateSeries method pushes the usgsData into yData and xData arrays
 	Model.prototype.populateSeries = function(siteArray){
-	  this.numberOfSites=siteArray.length;
-	  for (n=0; n<this.numberOfSites; n++){
-	    var results = { //clear results object
-	      siteName: "",
-	      xData: [],
-	      yData: []
-	    };
-	    results.siteName=siteArray[n].sourceInfo.siteName; //populate siteName
-	    //go through each x,y pair in that timeseries's results. 
-	    $.each(siteArray[n].values[0].value, function(n, value){
-	        //use moment library to format iso timestamp, then push into xData array
-	        results.xData.push(moment(value.dateTime).format("MM/DD"));
-	        results.yData.push(parseInt(value.value));
-	    });
-	    this.sites.push(results); //push a results object into the model's array of sites
-	  };
-	  //this.sites = siteArray;
+	  
+	  for (n=0; n<siteArray.length; n++){
+	      //if value array is populated, push data into model
+	      if(siteArray[n].values[0].value.length>0){
+	        var results = { //clear results object for each new site
+	          siteName: "",
+	          xData: [],
+	          yData: []
+	        };
+	        results.siteName=siteArray[n].sourceInfo.siteName; //populate siteName
+	        $.each(siteArray[n].values[0].value, function(n, value){
+	          //go through each x,y pair in that timeseries's results. 
+	          //use moment library to format iso timestamp, then push into xData array
+	          results.xData.push(moment(value.dateTime).format("MM/DD"));
+	          results.yData.push(parseInt(value.value));
+	        
+	        });
+	        this.sites.push(results); //push a results object into the model's array of sites
+	      }; //close if statement checking for data
+	  }; //close iterations through each resulting site
+	  this.numberOfSites = this.sites.length;
 	  console.log(this.sites);
-	  //call view.drawGraph()
 	  this.callback();
 	};
-	Model.prototype.getData = function(position){
+
+	Model.prototype.getData = function(state){
 	  var usgs = new Usgs();
 	  var that = this;
-	  usgs.goTalk(position)
+	  usgs.goTalk(state)
 	      .done(function(result){
 	          that.populateSeries(result.value.timeSeries);
 	          console.log(result);
@@ -10398,19 +10393,16 @@
 
 
 	  //writeRequest turns the getCurrentPosition object into a string in the request
-	Usgs.prototype.writeRequest=function(position){
-	    var long=position.coords.longitude.toString().slice(0,11);
-	    var lat=position.coords.latitude.toString().slice(0,9);
-	    var longExt=(position.coords.longitude+1).toString().slice(0,11);
-	    var latExt=(position.coords.latitude+1).toString().slice(0,9);  
+	Usgs.prototype.writeRequest=function(state){
+	    
 	    var request = {
 	      format: "json",
-	      bBox: long+","+lat+","+longExt+","+latExt,
+	      stateCd: state,
 	      period: "P5D",
 	      parameterCD: "00060",
 	      siteType: "ST",
 	      siteStatus: "active",
-	      csurl: 'http://waterservices.usgs.gov/nwis/iv/'
+	      //csurl: 'http://waterservices.usgs.gov/nwis/dv/'
 	    };
 	    return request;
 	};
@@ -10418,11 +10410,12 @@
 
 	  //sendRequest sends the request written by writeRequest
 	  //will need to be called from controller
-	Usgs.prototype.goTalk=function(position){
+	Usgs.prototype.goTalk=function(state){
 	    return $.ajax({
-	      url: 'https://www.gmtatennis.org/kp/proxy.php',
+	      //url: 'https://www.gmtatennis.org/kp/proxy.php',
+	      url: 'http://waterservices.usgs.gov/nwis/dv/',
 	      format: "json",
-	      data: this.writeRequest(position), //don't send any params to usgs until writeRequest has formatted us some coords
+	      data: this.writeRequest(state), 
 	      type: "GET"
 	    });
 	     
@@ -10523,7 +10516,17 @@
 	      that.previous();
 	    }
 	  });
-	}
+	};
+
+	Views.prototype.watchForm = function(){
+	  var that = this;
+	  $('form').change(function(e){
+	        console.log(e.target.value);
+	        var state = e.target.value.toLowerCase();
+	        that.model.getData(state); //send value to model
+	        that.showLoading();
+	    })
+	};
 
 	Views.prototype.next = function(){
 	  var that = this;

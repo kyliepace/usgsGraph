@@ -85,7 +85,17 @@ Views.prototype.changeSites = function(){
       that.previous();
     }
   });
-}
+};
+
+Views.prototype.watchForm = function(){
+  var that = this;
+  $('form').change(function(e){
+        console.log(e.target.value);
+        var state = e.target.value.toLowerCase();
+        that.model.getData(state); //send value to model
+        that.showLoading();
+    })
+};
 
 Views.prototype.next = function(){
   var that = this;

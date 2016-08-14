@@ -12,18 +12,9 @@ Controller = function(model, view){
 };
 
 Controller.prototype.run = function(){ 
-    //get the coordinates, sends the request, gets data, and populates the series array
-var that = this;
-    if (navigator.geolocation) {
-        that.view.showLoading();
-        //return the geolocation object with writeRequest as a callback
-        navigator.geolocation.getCurrentPosition(function(position){
-            that.model.getData(position);
-        });
-    }
-    else {
-      x.innerHTML = "Geolocation is not supported by this browser.";
-    }
+    var that = this;
+    that.view.watchForm();
+    
     that.view.changeSites();
 };
 
