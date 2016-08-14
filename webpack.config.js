@@ -10,8 +10,8 @@ module.exports = {
 		'./js/controller.js'
 	],
 	output: {
-		path: __dirname +'/public',
+		path: __dirname ,
 		filename: 'bundle.js'
 	},
-	plugins: [HTMLWebpackPluginConfig]
+	//plugins: [HTMLWebpackPluginConfig]
 }

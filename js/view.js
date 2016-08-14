@@ -5,6 +5,12 @@ Views = function(){
   this.currentSite=0;
   this.hydrograph;
 };
+Views.prototype.showLoading = function(){
+  $('.graph h4').text('Loading content');
+};
+Views.prototype.endLoading = function(){
+  $('.graph h4').text('');
+};
 Views.prototype.drawGraph  = function(){
   var that = this;
     //update graph caption

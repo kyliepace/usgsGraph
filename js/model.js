@@ -6,6 +6,7 @@ Model=function(){ //constructor function
   this.numberOfSites;
   this.sites=[];
   this.callback;
+  this.view;
 };
 
 //the populateSeries method pushes the usgsData into yData and xData arrays
@@ -38,6 +39,7 @@ Model.prototype.getData = function(position){
       .done(function(result){
           that.populateSeries(result.value.timeSeries);
           console.log(result);
+          that.view.endLoading();
       }) 
       .fail(function(jqXHR, error){
           console.log("error sending request");
