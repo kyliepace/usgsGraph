@@ -100,6 +100,7 @@
 
 	//the populateSeries method pushes the usgsData into yData and xData arrays
 	Model.prototype.populateSeries = function(siteArray){
+	  this.sites = []; //clear sites array;
 	  for (n = 0; n < siteArray.length; n++){
 	      //if value array is populated, push data into model
 	      if(siteArray[n].values[0].value.length > 0){
@@ -10465,7 +10466,6 @@
 	        scaleShowLabels: true,
 	        responsive: true,
 	        maintainAspectRatio: true,
-
 	        scales:{
 	            xAxes: [{
 	              type: "category",
@@ -10517,7 +10517,6 @@
 	Views.prototype.watchForm = function(){
 	  var that = this;
 	  $("form").change(function(e){
-	        console.log(e.target.value);
 	        var state = e.target.value.toLowerCase();
 	        that.model.getData(state); //send value to model
 	        that.showLoading();

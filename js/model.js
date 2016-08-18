@@ -11,6 +11,7 @@ Model=function(){ //constructor function
 
 //the populateSeries method pushes the usgsData into yData and xData arrays
 Model.prototype.populateSeries = function(siteArray){
+  this.sites = []; //clear sites array;
   for (n = 0; n < siteArray.length; n++){
       //if value array is populated, push data into model
       if(siteArray[n].values[0].value.length > 0){
