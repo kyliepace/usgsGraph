@@ -6,7 +6,8 @@ Views = function(){
   this.hydrograph;
 };
 Views.prototype.showLoading = function(){
-  $('.graph h4').text('Loading content');
+  $("#main").css("display","flex");
+  $(".graph h4").text("Loading content");
 };
 Views.prototype.endLoading = function(){
   $('.graph h4').text('');
@@ -38,7 +39,6 @@ Views.prototype.drawGraph  = function(){
         scaleShowLabels: true,
         responsive: true,
         maintainAspectRatio: true,
-
         scales:{
             xAxes: [{
               type: "category",
@@ -89,8 +89,7 @@ Views.prototype.changeSites = function(){
 
 Views.prototype.watchForm = function(){
   var that = this;
-  $('form').change(function(e){
-        console.log(e.target.value);
+  $("form").change(function(e){
         var state = e.target.value.toLowerCase();
         that.model.getData(state); //send value to model
         that.showLoading();
@@ -118,4 +117,3 @@ Views.prototype.previous = function(){
 }
 
 module.exports = Views;
- 
