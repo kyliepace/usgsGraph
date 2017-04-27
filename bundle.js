@@ -10409,7 +10409,7 @@
 	Usgs.prototype.goTalk=function(state){
 	    return $.ajax({
 	      //url: 'https://www.gmtatennis.org/kp/proxy.php',
-	      url: 'http://waterservices.usgs.gov/nwis/dv/',
+	      url: 'https://waterservices.usgs.gov/nwis/dv/',
 	      format: "json",
 	      data: this.writeRequest(state), 
 	      type: "GET"
