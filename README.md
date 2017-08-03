@@ -1,7 +1,27 @@
-# usgsGraph
-project for thinkful fewd course. use usgs api to get streamflow data from nearby gages. plot data in graphing library. share plot on social media.
+# usgsgraph
 
+> A Vue.js project
 
-Originally sent user location data to usgs api. Graph returned streamflow data using chart.js and moment.js. 
+## Build Setup
 
-getLocation() needs https so instead the app has a dropdown form. On selection of the state, the usgs api returns all the active streams in that state. The model culls the list down to only sites with data from the past 5 days. Chart.js shows streamflow for those sites for the past 5 days.
+``` bash
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+
+# build for production and view the bundle analyzer report
+npm run build --report
+
+# run unit tests
+npm run unit
+
+# run all tests
+npm test
+```
+
+For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
