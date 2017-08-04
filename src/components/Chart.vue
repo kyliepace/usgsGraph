@@ -1,7 +1,11 @@
 <template>
-	<div>
-		<h4>{{name}}</h4>
-		<line-chart :data="data"></line-chart>
+	<div style='padding: 20px;'>
+		<div style='display: flex; margin: auto; text-align: center; width: 100%; justify-content: space-around;'>
+			<button @click='counterLess'>Prev</button>
+			<h4>{{name}}</h4>
+			<button @click='counterMore'>Next</button>
+		</div>
+		<line-chart :data="data" ></line-chart>
 	</div>
 </template>
 
@@ -31,7 +35,12 @@ export default {
 		}
 	},
 	methods: {
-
+		counterLess() {
+			this.counter = this.counter > 0 ? this.counter-- : this.streamResults.length - 1;
+		},
+		counterMore() {
+			this.counter < this.streamResults.length ? this.counter ++ : 0
+		}
 	}
 };
 

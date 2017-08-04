@@ -2,6 +2,7 @@
   <div id="app">
     <h1>Chart your local streams</h1>
     <State @sendState='sendRequest'></State>
+    
     <Chart v-if='streamResults.length > 0' :streamResults='streamResults'></Chart>
   </div>
 </template>
