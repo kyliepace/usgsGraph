@@ -2,7 +2,7 @@
   <div id="app">
     <h1>Chart your local streams</h1>
     <State @sendState='sendRequest'></State>
-    <Chart :streamResults='streamResults'></Chart>
+    <Chart v-if='streamResults.length > 0' :streamResults='streamResults'></Chart>
   </div>
 </template>
 
@@ -19,37 +19,24 @@ export default {
   },
   data(){
     return {
-      streamResults: {}
+      streamResults: []
     }
   },
   methods: {
-    sendRequest(state){
+    sendRequest(location){
 
-      var data = {
-        format: "json",
-        stateCd: state,
-        period: "P5D",
-        parameterCD: "00060",
-        siteType: "ST",
-        siteStatus: "active",
-      };
+      console.log('state: ' + location);
 
-      var url = `https://waterservices.usgs.gov/nwis/dv/?format=json&stateCd=${state}&siteType=ST&siteStatus=all`;
-
-      var myRequest = new Request(url, {
-        method: 'GET', 
-        headers: new Headers(),
-        body: data,
-        format: 'json'
-      });
+      var url = `https://waterservices.usgs.gov/nwis/dv/?format=json&stateCd=${location}&period=P5D&siteType=ST&siteStatus=active`;
 
       var that = this;
 
-      fetch(url, myRequest).then( res => {
+      fetch(url).then( res => {
           return res.json()
         }
       ).then(data => {
-          this.streamResults = data.value;
+          this.streamResults = data.value.timeSeries;
+          console.log(data.value.timeSeries[0])
       }).catch(err => {
         console.log(err);
       });

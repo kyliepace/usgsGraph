@@ -20,7 +20,14 @@ export default{
 	},
 	watch: {
 		selectedState(){
-			this.sendState();
+		
+			if(this.selectedState.length == 2){
+				// this.states.find(state => {
+				// 	return state.name = this.selectedState
+				// })
+				this.sendState();
+			}
+			
 		}
 	},
 	data(){
