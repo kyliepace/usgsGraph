@@ -13,3 +13,5 @@ test/unit/coverage
 *.njsproj
 *.sln
 node_modules
+node_modules
+dist
