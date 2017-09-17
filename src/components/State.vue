@@ -1,15 +1,19 @@
 <template>
 	<div>
-		<input type='text' list='stateList' name='stateList' 
+		<input type='text' 
+		v-if='notSafari'
+		list='stateList' name='stateList' 
 		v-model='selectedState' placeholder='state'>
 		<datalist id='stateList'>
-	 		<option v-for='state in states' :value='state.abbreviation' >{{state.name}}</option>
+			<select v-model='selectedState'>
+	 			<option v-for='state in states' :value='state.abbreviation' >{{state.name}}</option>
+	 		</select>
 	 	</datalist>
 	</div>
 </template>
 
 <script>
-
+const browser = require('detect-browser');
 
 export default{
 	name: 'State',
@@ -29,8 +33,18 @@ export default{
 			
 		}
 	},
+	mounted(){
+		if (browser && browser.name) {
+		  console.log(browser.name);
+		  console.log(browser.version);
+		  if(browser.name == 'safari'){
+		  	this.notSafari = false;
+		  }
+		}
+	},
 	data(){
 		return {
+		notSafari: true,
 		selectedState: '',
 		states: [
 		  {
