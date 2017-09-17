@@ -2,7 +2,11 @@
   <div id="app">
     <h1>Chart your local streams</h1>
     <State @sendState='sendRequest'></State>
-    
+
+    <div v-if='loading'>
+      <icon scale='2' name="refresh" spin></icon>
+    </div>
+
     <Chart v-if='streamResults.length > 0' :streamResults='streamResults'></Chart>
   </div>
 </template>
@@ -10,7 +14,7 @@
 <script>
 import State from './components/State.vue'
 import Chart from './components/Chart.vue'
-
+import 'vue-awesome/icons/refresh'
 
 export default {
   name: 'app',
@@ -20,15 +24,19 @@ export default {
   },
   data(){
     return {
-      streamResults: []
+      streamResults: [],
+      loading: false
     }
   },
   methods: {
     sendRequest(location){
+      // toggle loader
+      this.loading = true;
 
+      // get state data from usgs
       console.log('state: ' + location);
 
-      var url = `https://waterservices.usgs.gov/nwis/dv/?format=json&stateCd=${location}&period=P5D&siteType=ST&siteStatus=active`;
+      var url = `https://waterservices.usgs.gov/nwis/dv/?format=json&stateCd=${location}&period=P10D&siteType=ST&siteStatus=active`;
 
       var that = this;
 
@@ -37,7 +45,7 @@ export default {
         }
       ).then(data => {
           this.streamResults = data.value.timeSeries;
-          console.log(data.value.timeSeries[0])
+          this.loading = false; // toggle loader
       }).catch(err => {
         console.log(err);
       });

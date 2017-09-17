@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<input type='text' list='stateList' name='stateList' v-model='selectedState'>
+		<input type='text' list='stateList' name='stateList' 
+		v-model='selectedState' placeholder='state'>
 		<datalist id='stateList'>
 	 		<option v-for='state in states' :value='state.abbreviation' >{{state.name}}</option>
 	 	</datalist>
@@ -22,9 +23,7 @@ export default{
 		selectedState(){
 		
 			if(this.selectedState.length == 2){
-				// this.states.find(state => {
-				// 	return state.name = this.selectedState
-				// })
+				//send state value to app
 				this.sendState();
 			}
 			
@@ -248,7 +247,7 @@ export default{
 }
 </script>
 
-<style scoped>
+<style>
 input{
 	width: 200px;
 	height: 35px;
